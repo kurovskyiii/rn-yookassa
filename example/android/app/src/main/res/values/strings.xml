@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RnYookassa Example</string>
+    <string name="ym_app_scheme" translatable="false">storeapp</string>
 </resources>
