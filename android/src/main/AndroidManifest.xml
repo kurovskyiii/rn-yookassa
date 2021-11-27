@@ -1,4 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.rnyookassa">
-
+    <application>
+        <activity android:name=".scanner.ScanBankCardActivity" android:label="">
+            <intent-filter>
+                <action android:name="ru.yoomoney.sdk.kassa.payments.action.SCAN_BANK_CARD"/>
+            </intent-filter>
+        </activity>
+    </application>
 </manifest>

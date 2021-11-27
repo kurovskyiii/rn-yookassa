@@ -1,18 +1,27 @@
 import * as React from 'react';
+import { Alert, TouchableOpacity, StyleSheet, View, Text } from 'react-native';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'rn-yookassa';
+import { tokenize } from 'rn-yookassa';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+  const onPayPress = () => {
+    tokenize({
+      clientApplicationKey: 'test_ODIzNDE0PrQiM6dYe7ypegMZcKq6b_Rk7Zok467bGao',
+      shopId: '823414',
+      title: 'Товар',
+      subtitle: 'Описание',
+      price: 100,
+      isDebug: true,
+    })
+      .then((result) => Alert.alert(JSON.stringify(result)))
+      .catch((err) => Alert.alert(JSON.stringify(err)));
+  };
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <TouchableOpacity style={styles.button} onPress={onPayPress}>
+        <Text style={styles.buttonTitle}>Pay</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -23,9 +32,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  box: {
-    width: 60,
+  button: {
+    backgroundColor: 'black',
+    width: 300,
     height: 60,
-    marginVertical: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonTitle: {
+    color: 'white',
   },
 });
