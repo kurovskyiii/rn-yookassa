@@ -128,7 +128,38 @@ target 'ExampleApp' do
     - In your Xcode project => File => New File => Strings File => Localizable.strings => Open new created Localizable.strings and paste all copy strings
     - After pasting strings look at Xcode right side and find a Localization menu => Choose Russian language
 
-## STEP 3: Using
+## STEP 3: Usage
+
+```typescript
+import { tokenize, PaymentTypesEnum, GooglePaymentTypesEnum } from 'rn-yookassa';
+
+const onPayPress = () => {
+    tokenize({
+      clientApplicationKey: 'test_ABCDE',
+      shopId: '123456',
+      title: 'iPhone 7',
+      subtitle: 'Best device!',
+      price: 1000,
+      // OPTIONAL:
+      paymentTypes: [PaymentTypesEnum.BANK_CARD, PaymentTypesEnum.APPLE_PAY],
+      authCenterClientId: '123abc',
+      userPhoneNumber: '79301234567',
+      gatewayId: '123abc',
+      returnUrl: 'http://google.com',
+      googlePaymentTypes: [GooglePaymentTypesEnum.VISA, GooglePaymentTypesEnum.MASTERCARD],
+      applePayMerchantId: 'merchantABC',
+      isDebug: false
+    })
+      .then(
+        (result) => 
+          console.log(`${result.token} ${result.type}`)
+       )
+      .catch(
+        (err: ErrorResult) => 
+          console.log(`${err.code} ${err.message}`)
+       );
+}
+```
 
 ### Troubleshooting
 
