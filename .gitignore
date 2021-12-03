@@ -41,6 +41,10 @@ local.properties
 android.iml
 *.hprof
 
+# iOS
+#
+example/ios/Frameworks
+
 # Cocoapods
 #
 example/ios/Pods
