@@ -13,7 +13,7 @@ export default function App() {
       price: 100,
       // isDebug: true,
     })
-      .then((result) => Alert.alert(JSON.stringify(result)))
+      .then((result) => Alert.alert(`${result.token} ${result.type}`))
       .catch((err: ErrorResult) => Alert.alert(`${err.code} ${err.message}`));
   };
 

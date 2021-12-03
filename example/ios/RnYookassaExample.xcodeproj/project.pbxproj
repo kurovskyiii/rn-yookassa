@@ -15,12 +15,12 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* RnYookassaExampleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RnYookassaExampleTests.m */; };
+		3A52DCFB275AAE6000AD2148 /* TMXProfiling.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71BAAB62275A51B800576963 /* TMXProfiling.xcframework */; };
+		3A52DCFC275AAE6000AD2148 /* TMXProfiling.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 71BAAB62275A51B800576963 /* TMXProfiling.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3A52DCFD275AAE6000AD2148 /* TMXProfilingConnections.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71BAAB66275A51C500576963 /* TMXProfilingConnections.xcframework */; };
+		3A52DCFE275AAE6000AD2148 /* TMXProfilingConnections.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 71BAAB66275A51C500576963 /* TMXProfilingConnections.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4C39C56BAD484C67AA576FFA /* libPods-RnYookassaExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA3E69C5B9553B26FBA2DF04 /* libPods-RnYookassaExample.a */; };
 		719A86BA275A606D0040AF78 /* libswiftWebKit.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 719A86B9275A606D0040AF78 /* libswiftWebKit.tbd */; };
-		71BAAB63275A51B800576963 /* TMXProfiling.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71BAAB62275A51B800576963 /* TMXProfiling.xcframework */; };
-		71BAAB64275A51B800576963 /* TMXProfiling.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 71BAAB62275A51B800576963 /* TMXProfiling.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		71BAAB67275A51C500576963 /* TMXProfilingConnections.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71BAAB66275A51C500576963 /* TMXProfilingConnections.xcframework */; };
-		71BAAB68275A51C500576963 /* TMXProfilingConnections.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 71BAAB66275A51C500576963 /* TMXProfilingConnections.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -42,14 +42,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		71BAAB65275A51B800576963 /* Embed Frameworks */ = {
+		3A52DCFF275AAE6000AD2148 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				71BAAB68275A51C500576963 /* TMXProfilingConnections.xcframework in Embed Frameworks */,
-				71BAAB64275A51B800576963 /* TMXProfiling.xcframework in Embed Frameworks */,
+				3A52DCFE275AAE6000AD2148 /* TMXProfilingConnections.xcframework in Embed Frameworks */,
+				3A52DCFC275AAE6000AD2148 /* TMXProfiling.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -92,10 +92,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A52DCFD275AAE6000AD2148 /* TMXProfilingConnections.xcframework in Frameworks */,
 				719A86BA275A606D0040AF78 /* libswiftWebKit.tbd in Frameworks */,
-				71BAAB67275A51C500576963 /* TMXProfilingConnections.xcframework in Frameworks */,
-				71BAAB63275A51B800576963 /* TMXProfiling.xcframework in Frameworks */,
 				4C39C56BAD484C67AA576FFA /* libPods-RnYookassaExample.a in Frameworks */,
+				3A52DCFB275AAE6000AD2148 /* TMXProfiling.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,8 +234,8 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				C1D60D28B925C94BD88E79D7 /* [CP] Copy Pods Resources */,
-				71BAAB65275A51B800576963 /* Embed Frameworks */,
 				E508AB1E56C9C24D3B7DF731 /* [CP] Embed Pods Frameworks */,
+				3A52DCFF275AAE6000AD2148 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -446,8 +446,8 @@
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/FunctionalSwift/FunctionalSwift.framework/FunctionalSwift",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/MoneyAuth/MoneyAuth.framework/MoneyAuth",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ThreatMetrixAdapter/ThreatMetrixAdapter.framework/ThreatMetrixAdapter",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/YandexMobileMetrica/YandexMobileMetrica.framework/YandexMobileMetrica",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/YandexMobileMetricaCrashes/YandexMobileMetricaCrashes.framework/YandexMobileMetricaCrashes",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/YandexMobileMetrica/Dynamic/Core/YandexMobileMetrica.framework/YandexMobileMetrica",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/YandexMobileMetrica/Dynamic/Crashes/YandexMobileMetricaCrashes.framework/YandexMobileMetricaCrashes",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/YooMoneyCoreApi/YooMoneyCoreApi.framework/YooMoneyCoreApi",
 			);
 			name = "[CP] Embed Pods Frameworks";

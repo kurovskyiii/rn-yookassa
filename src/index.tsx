@@ -46,6 +46,7 @@ export interface PaymentConfig {
   gatewayId?: string;
   returnUrl?: string;
   googlePaymentTypes?: GooglePaymentType[];
+  applePayMerchantId?: string;
   isDebug?: boolean;
 }
 

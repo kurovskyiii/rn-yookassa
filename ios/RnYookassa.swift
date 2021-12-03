@@ -27,25 +27,47 @@ class RnYookassa: RCTViewManager, TokenizationModuleOutput {
     }
 
     @objc
-    func pay(_ info: NSDictionary, callbacker callback: @escaping RCTResponseSenderBlock) -> Void {
+    func tokenize(_ info: NSDictionary, callbacker callback: @escaping RCTResponseSenderBlock) -> Void {
         self.callback = callback
-        guard let clientApplicationKey = info["api_key"] as? String,
-            let amountValue = info["amount"] as? NSNumber,
-            let shopName = info["shop_name"] as? String,
-            let purchaseDescription = info["purchase_description"] as? String,
-            let paymentTypes = info["payment_types"] as? [String]
-            else {
-                return
-            }
+        guard let clientApplicationKey = info["clientApplicationKey"] as? String,
+            let shopId = info["shopId"] as? String,
+            let title = info["title"] as? String,
+            let subtitle = info["subtitle"] as? String,
+            let amountValue = info["price"] as? NSNumber
+        else {
+            return
+        }
+        
+            // Optional:
+            let paymentTypes = info["paymentTypes"] as? [String]
+            let authCenterClientId = info["authCenterClientId"] as? String
+            let userPhoneNumber = info["userPhoneNumber"] as? String
+            let gatewayId = info["gatewayId"] as? String
+            let applePayMerchantId = info["applePayMerchantId"] as? String
+            let returnUrl = info["returnUrl"] as? String
+            let isDebug = info["isDebug"] as? Bool
+  
         var paymentMethodTypes: PaymentMethodTypes = []
-        paymentTypes.forEach { type in
-            if let payType = PaymentMethodType(rawValue: type) {
-                paymentMethodTypes.insert(PaymentMethodTypes(rawValue: [payType]))
+        
+        if (paymentTypes != nil) {
+            paymentTypes!.forEach { type in
+                if let payType = PaymentMethodType(rawValue: type) {
+                    paymentMethodTypes.insert(PaymentMethodTypes(rawValue: [payType]))
+                }
+            }
+        } else {
+            paymentMethodTypes.insert(.bankCard)
+            paymentMethodTypes.insert(.sberbank)
+            paymentMethodTypes.insert(.yooMoney)
+            
+            if (applePayMerchantId != nil) {
+                paymentMethodTypes.insert(.applePay)
             }
         }
+        
         let testModeSettings = TestModeSettings(paymentAuthorizationPassed: false,
                                                 cardsCount: 2,
-                                                charge: Amount(value: 100, currency: .rub),
+                                                charge: Amount(value: 10, currency: .rub),
                                                 enablePaymentError: false)
 
         let tokenizationSettings = TokenizationSettings(paymentMethodTypes: paymentMethodTypes)
@@ -53,15 +75,20 @@ class RnYookassa: RCTViewManager, TokenizationModuleOutput {
         let amount = Amount(value: amountValue.decimalValue, currency: .rub) // rub
         let tokenizationModuleInputData =
             TokenizationModuleInputData(clientApplicationKey: clientApplicationKey,
-            shopName: shopName,
-            purchaseDescription: purchaseDescription,
+            shopName: title,
+            purchaseDescription: subtitle,
             amount: amount,
+            gatewayId: gatewayId,
             tokenizationSettings: tokenizationSettings,
-            testModeSettings: (info["test"] != nil) ? testModeSettings : nil,
+            testModeSettings: (isDebug != nil) ? testModeSettings : nil,
             cardScanning: CardScannerProvider(),
-            applePayMerchantIdentifier: info["applePayMerchantIdentifier"] as? String,
-            returnUrl: (info["returnUrl"] != nil) ? info["returnUrl"] as? String : nil,
-            savePaymentMethod: .userSelects
+            applePayMerchantIdentifier: applePayMerchantId,
+            returnUrl: returnUrl,
+            isLoggingEnabled: (isDebug != nil) ? true : false,
+            userPhoneNumber: userPhoneNumber,
+            savePaymentMethod: .userSelects,
+            moneyAuthClientId: authCenterClientId,
+            customerId: userPhoneNumber
         )
 
         DispatchQueue.main.async {
@@ -75,21 +102,30 @@ class RnYookassa: RCTViewManager, TokenizationModuleOutput {
     func tokenizationModule(_ module: TokenizationModuleInput,
                             didTokenize token: Tokens,
                             paymentMethodType: PaymentMethodType) {
+        let result: NSDictionary = [
+            "token" : token.paymentToken,
+            "type" : paymentMethodType.rawValue.uppercased()
+        ]
+        
         if let callback = callback {
-            callback([
-                token.paymentToken,
-                paymentMethodType.rawValue
-            ])
+            callback([result])
             self.callback = nil
+        }
+        
+        DispatchQueue.main.async {
+            self.viewController?.dismiss(animated: true)
         }
     }
 
 
     func didFinish(on module: TokenizationModuleInput, with error: YooKassaPaymentsError?) {
+        let error: NSDictionary = [
+            "code" : "E_PAYMENT_CANCELLED",
+            "message" : "Payment cancelled."
+        ]
+        
         if let callback = callback {
-            callback([
-                "","","error"
-            ])
+            callback([NSNull(), error])
             self.callback = nil
         }
         DispatchQueue.main.async {
@@ -103,7 +139,7 @@ class RnYookassa: RCTViewManager, TokenizationModuleOutput {
 
     func didSuccessfullyPassedCardSec(on module: TokenizationModuleInput) {
         if let callback = self.confirmCallback {
-            callback(["success"])
+            callback([true])
             confirmCallback = nil
         }
         viewController?.dismiss(animated: true)
