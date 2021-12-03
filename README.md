@@ -22,7 +22,7 @@ npm install rn-yookassa --save
 ‼️  Required TMX Android SDK version > 6.2-XX ‼️<br/><br/>
 2.  Make sure your `android/build.gradle` looks like that. Pay attention for `minSdkVersion`, `kotlinVersion`, version of `com.android.tools.build:gradle`. This is the minimal requirements, so if you have higher versions it's ok.
 
-```java
+```gradle
 buildscript {
     ext {
         minSdkVersion = 21 // <- CHECK YOU HAVE THIS MINIMAL VERSION
@@ -44,7 +44,7 @@ buildscript {
 ...
 ```
 
-```java
+```gradle
 ...
 
 allprojects {
@@ -59,7 +59,7 @@ allprojects {
 
 3.  Add following lines in `android/app/build.gradle` dependencies:
 
-```java
+```gradle
 ...
 
 dependencies {
@@ -96,7 +96,7 @@ dependencies {
 
 1.  Change `ios/Podfile` like this:
 
-```
+```ruby
 source 'https://github.com/CocoaPods/Specs.git' # <- ADD THIS LINE
 source 'https://github.com/yoomoney-tech/cocoa-pod-specs.git' # <- ADD THIS LINE
 
@@ -131,14 +131,18 @@ target 'ExampleApp' do
 ## STEP 3: Using
 
 ### Troubleshooting
+
 If you see errors in Xcode Project like this:
+
 ```
 Failed to build module 'MoneyAuth' from its module interface...
 Compipiling for iOS 10.0, but module 'FunctiionalSwift' has a minimum deployment target iOS 11.0...
 Typedef redefinition with different types ('uint8_t' (aka 'unsigned char'))...
 ```
+
 You can resolve it by adding post_install in your Podfile:
-```
+
+```ruby
 post_install do |installer|
   installer.pods_project.targets.each do |target|
   target.build_configurations.each do |config|
@@ -159,7 +163,6 @@ end
 https://github.com/yoomoney/yookassa-payments-swift/issues/93
 
 For using your custom realization of **3DSecure confirmation**, specify `returnUrl`: string for redirect to your link. Not use `confirmPayment()` method with `returnUrl`.
-
 
 ## License
 
