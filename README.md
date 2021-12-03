@@ -80,7 +80,7 @@ dependencies {
 </resources>
 ```
 
-6. Add this in AndroidManifest.xml for card scanning work
+6. Add this in AndroidManifest.xml for card scanning work:
 
 ```xml
 <manifest ...>
