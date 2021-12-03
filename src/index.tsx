@@ -32,6 +32,7 @@ export type GooglePaymentType =
   | 'VISA'
   | 'INTERAC'
   | 'OTHER';
+
 export interface PaymentConfig {
   clientApplicationKey: string;
   shopId: string;
@@ -43,6 +44,7 @@ export interface PaymentConfig {
   authCenterClientId?: string; // ! If YooMoney method selected
   userPhoneNumber?: string;
   gatewayId?: string;
+  returnUrl?: string;
   googlePaymentTypes?: GooglePaymentType[];
   isDebug?: boolean;
 }
@@ -52,6 +54,11 @@ export interface PaymentResult {
   type: PaymentType;
 }
 
+export interface ErrorResult {
+  code: string;
+  message: string;
+}
+
 export function tokenize(info: PaymentConfig): Promise<PaymentResult> {
   //TODO: Maybe create mapper
   const paymentConfig = info;
@@ -59,13 +66,10 @@ export function tokenize(info: PaymentConfig): Promise<PaymentResult> {
   return new Promise((resolve, reject) => {
     RnYookassa.tokenize(
       paymentConfig,
-      (token: string, type: PaymentType, error: string) => {
-        if (!!token && !!type) {
-          resolve({
-            token: token,
-            type: type,
-          });
-        } else if (error) {
+      (result?: PaymentResult, error?: ErrorResult) => {
+        if (result) {
+          resolve(result);
+        } else {
           reject(error);
         }
       }
@@ -75,11 +79,11 @@ export function tokenize(info: PaymentConfig): Promise<PaymentResult> {
 
 export function confirmPayment(url: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    RnYookassa.confirmPayment(url, (result: string) => {
-      if (result === 'success') {
+    RnYookassa.confirmPayment(url, (result?: boolean, error?: ErrorResult) => {
+      if (result) {
         resolve();
       } else {
-        reject();
+        reject(error);
       }
     });
   });

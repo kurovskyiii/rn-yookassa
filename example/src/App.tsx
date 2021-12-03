@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Alert, TouchableOpacity, StyleSheet, View, Text } from 'react-native';
 
-import { tokenize } from 'rn-yookassa';
+import { tokenize, ErrorResult } from 'rn-yookassa';
 
 export default function App() {
   const onPayPress = () => {
@@ -11,10 +11,10 @@ export default function App() {
       title: 'Товар',
       subtitle: 'Описание',
       price: 100,
-      isDebug: true,
+      // isDebug: true,
     })
       .then((result) => Alert.alert(JSON.stringify(result)))
-      .catch((err) => Alert.alert(JSON.stringify(err)));
+      .catch((err: ErrorResult) => Alert.alert(`${err.code} ${err.message}`));
   };
 
   return (

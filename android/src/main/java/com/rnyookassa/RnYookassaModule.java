@@ -5,6 +5,7 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ActivityEventListener;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -12,7 +13,12 @@ import com.facebook.react.bridge.BaseActivityEventListener;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+
+import com.facebook.react.bridge.WritableMap;
 import com.rnyookassa.settings.Settings;
+import com.rnyookassa.callbackError.CallbackError;
+import com.rnyookassa.callbackError.CallbackErrorTypes;
+import com.rnyookassa.callbackSuccess.CallbackTokenizeSuccess;
 
 import java.math.BigDecimal;
 import java.util.Currency;
@@ -64,9 +70,10 @@ public class RnYookassaModule extends ReactContextBaseJavaModule {
     String authCenterClientId = obj.hasKey("authCenterClientId") ? obj.getString("authCenterClientId") : null;
     String userPhoneNumber = obj.hasKey("userPhoneNumber") ? obj.getString("userPhoneNumber") : null;
     String gatewayId = obj.hasKey("gatewayId") ? obj.getString("gatewayId") : null;
+    String returnUrl = obj.hasKey("returnUrl") ? obj.getString("returnUrl") : null;
     ReadableArray googlePaymentTypes = obj.hasKey("googlePaymentTypes") ? obj.getArray("googlePaymentTypes") : null;
 
-    Boolean isDebug = Boolean.valueOf(obj.getBoolean("isDebug"));
+    Boolean isDebug = obj.hasKey("isDebug") ? Boolean.valueOf(obj.getBoolean("isDebug")) : false;
 
     final Set<PaymentMethodType> paymentMethodTypes = getPaymentMethodTypes(paymentTypes, authCenterClientId != null);
     final Set<GooglePayCardNetwork> googlePaymentMethodTypes = getGooglePaymentMethodTypes(googlePaymentTypes);
@@ -81,7 +88,7 @@ public class RnYookassaModule extends ReactContextBaseJavaModule {
       // optional:
       paymentMethodTypes,
       gatewayId,
-      null,
+      returnUrl,
       userPhoneNumber,
       new GooglePayParameters(googlePaymentMethodTypes),
       authCenterClientId
@@ -90,7 +97,9 @@ public class RnYookassaModule extends ReactContextBaseJavaModule {
     TestParameters testParameters = new TestParameters(true, true,
       new MockConfiguration(false, true, 5, new Amount(BigDecimal.TEN, Currency.getInstance("RUB"))));
 
-    Intent intent = Checkout.createTokenizeIntent(this.reactContext, paymentParameters, isDebug ? testParameters : null);
+    Intent intent = isDebug ?
+      Checkout.createTokenizeIntent(this.reactContext, paymentParameters, testParameters) :
+      Checkout.createTokenizeIntent(this.reactContext, paymentParameters);
     getCurrentActivity().startActivityForResult(intent, REQUEST_CODE_TOKENIZE);
   }
 
@@ -102,7 +111,10 @@ public class RnYookassaModule extends ReactContextBaseJavaModule {
     Activity activity = getCurrentActivity();
 
     if (activity == null) {
-      paymentCallback.invoke(null,null,"error");
+      final CallbackError callbackErrorResult = new CallbackError(CallbackErrorTypes.E_PAYMENT_CANCELLED, "Payment confirmation error.");
+      final WritableMap errorResultMap = generateErrorMapCallback(callbackErrorResult);
+
+      paymentCallback.invoke(false, errorResultMap);
       return;
     }
 
@@ -201,12 +213,19 @@ public class RnYookassaModule extends ReactContextBaseJavaModule {
           case Activity.RESULT_OK:
             final TokenizationResult result = Checkout.createTokenizationResult(data);
             String token = result.getPaymentToken();
-            String type = result.getPaymentMethodType().name().toLowerCase();
-            paymentCallback.invoke(token, type);
+            String type = result.getPaymentMethodType().name().toUpperCase();
+
+            final CallbackTokenizeSuccess callbackReadyResult = new CallbackTokenizeSuccess(token, type);
+            final WritableMap resultMap = generateTokenizeSuccessCallback(callbackReadyResult);
+
+            paymentCallback.invoke(resultMap);
             break;
 
           case Activity.RESULT_CANCELED:
-            paymentCallback.invoke(null,null,"Payment cancelled");
+            final CallbackError callbackErrorResult = new CallbackError(CallbackErrorTypes.E_PAYMENT_CANCELLED, "Payment cancelled.");
+            final WritableMap cancelledResultMap = generateErrorMapCallback(callbackErrorResult);
+
+            paymentCallback.invoke(null, cancelledResultMap);
             break;
         }
       }
@@ -214,16 +233,35 @@ public class RnYookassaModule extends ReactContextBaseJavaModule {
       if (requestCode == REQUEST_CODE_3DSECURE) {
         switch (resultCode) {
           case Activity.RESULT_OK:
-            paymentCallback.invoke("success");
+            paymentCallback.invoke(true);
             break;
 
           case Activity.RESULT_CANCELED:
           case Checkout.RESULT_ERROR:
-            paymentCallback.invoke(null,null,"Payment cancelled");
+            final CallbackError callbackErrorResult = new CallbackError(CallbackErrorTypes.E_PAYMENT_CANCELLED, "Payment cancelled.");
+            final WritableMap errorResultMap = generateErrorMapCallback(callbackErrorResult);
+
+            paymentCallback.invoke(null, errorResultMap);
             break;
         }
       }
 
     }
   };
+
+  private final WritableMap generateTokenizeSuccessCallback(CallbackTokenizeSuccess result) {
+    final WritableMap resultMap = Arguments.createMap();
+    resultMap.putString("token", result.getToken());
+    resultMap.putString("type", result.getType());
+
+    return resultMap;
+  }
+
+  private final WritableMap generateErrorMapCallback(CallbackError error) {
+    final WritableMap resultMap = Arguments.createMap();
+    resultMap.putString("code", error.getCode().toString());
+    resultMap.putString("message", error.getMessage());
+
+    return resultMap;
+  }
 }
