@@ -1,5 +1,11 @@
 import { NativeModules, Platform } from 'react-native';
 
+import type {
+  TokenizationConfig,
+  TokenizationResult,
+  ErrorResult,
+} from './types';
+
 const LINKING_ERROR =
   `The package 'rn-yookassa' doesn't seem to be linked. Make sure: \n\n` +
   Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
@@ -17,57 +23,16 @@ const RnYookassa = NativeModules.RnYookassa
       }
     );
 
-export type PaymentType =
-  | 'BANK_CARD'
-  | 'APPLE_PAY'
-  | 'GOOGLE_PAY'
-  | 'YOO_MONEY'
-  | 'SBERBANK';
-
-export type GooglePaymentType =
-  | 'AMEX'
-  | 'DISCOVER'
-  | 'JCB'
-  | 'MASTERCARD'
-  | 'VISA'
-  | 'INTERAC'
-  | 'OTHER';
-
-export interface PaymentConfig {
-  clientApplicationKey: string;
-  shopId: string;
-  title: string;
-  subtitle: string;
-  // TODO: currency
-  price: number;
-  paymentTypes?: PaymentType[];
-  authCenterClientId?: string; // ! If YooMoney method selected
-  userPhoneNumber?: string;
-  gatewayId?: string;
-  returnUrl?: string;
-  googlePaymentTypes?: GooglePaymentType[];
-  applePayMerchantId?: string;
-  isDebug?: boolean;
-}
-
-export interface PaymentResult {
-  token: string;
-  type: PaymentType;
-}
-
-export interface ErrorResult {
-  code: string;
-  message: string;
-}
-
-export function tokenize(info: PaymentConfig): Promise<PaymentResult> {
+export function tokenize(
+  info: TokenizationConfig
+): Promise<TokenizationResult> {
   //TODO: Maybe create mapper
   const paymentConfig = info;
 
   return new Promise((resolve, reject) => {
     RnYookassa.tokenize(
       paymentConfig,
-      (result?: PaymentResult, error?: ErrorResult) => {
+      (result?: TokenizationResult, error?: ErrorResult) => {
         if (result) {
           resolve(result);
         } else {
