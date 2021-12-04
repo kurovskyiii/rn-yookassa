@@ -1,4 +1,4 @@
-# rn-yookassa – YooKassa React Native Integration
+# rn-yookassa – React Native YooKassa SDK Integration
 
 Inspired by: [react-native-yookassa-payments](https://www.npmjs.com/package/react-native-yookassa-payments)
 
