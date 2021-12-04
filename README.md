@@ -6,6 +6,37 @@ Inspired by: [react-native-yookassa-payments](https://www.npmjs.com/package/reac
 
 #### iOS NATIVE SDK - 6.4.0
 
+## Quick Navigation
+
+- [Running Example App](#running-example-app)
+- [STEP 1: Package Installation](#step-1-package-installation)
+- [STEP 2: Native Installation](#step-2-native-installation)
+  - [Android Installation](#android-installation)
+  - [iOS Installation](#ios-installation)
+- [Usage](#usage)
+- [Troubleshooting](#troubleshooting)
+
+## Running Example App
+
+```bash
+git clone https://github.com/kurovskyi/rn-yookassa.git
+```
+
+Open project folder and install dependencies:
+
+```bash
+yarn
+```
+
+Run Example App on device:
+
+```bash
+# Android:
+yarn example android
+# iOS:
+yarn example ios
+```
+
 ## STEP 1: Package Installation
 
 ```bash
@@ -132,7 +163,7 @@ target 'ExampleApp' do
    - In your Xcode project => File => New File => Strings File => Localizable.strings => Open new created Localizable.strings and paste all copy strings
    - After pasting strings look at Xcode right side and find a Localization menu => Choose Russian language
 
-## STEP 3: Usage
+## Usage
 
 ```typescript
 import {
@@ -166,7 +197,7 @@ const onPayPress = () => {
 };
 ```
 
-### `tokenize` props
+### `tokenize()` props
 
 | Name                     | Type                      | Default                         | Description                                                                                                                                                                                                 |
 | ------------------------ | ------------------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -176,7 +207,7 @@ const onPayPress = () => {
 | **subtitle**             | string                    | ❗️ **REQUIRED**                | Product description.                                                                                                                                                                                        |
 | **price**                | number                    | ❗️ **REQUIRED**                | Product price. Available payment methods can change depending on this parameter.                                                                                                                            |
 | **paymentTypes**         | PaymentTypesEnum[]?       | All of `PaymentTypesEnum`       | Array of needed payment methods. If you leave the field empty, the library will use all available payment methods.                                                                                          |
-| **authCenterClientId**   | string?                   | undefined                       | App's ID for sdk authorization ru.yoomoney.sdk.auth, see [Registering an app for payments via the wallet](https://github.com/yoomoney/yookassa-android-sdk#registering-an-app-for-payments-via-the-wallet). |
+| **authCenterClientId**   | string?                   | undefined                       | App's ID for SDK authorization ru.yoomoney.sdk.auth, see [Registering an app for payments via the wallet](https://github.com/yoomoney/yookassa-android-sdk#registering-an-app-for-payments-via-the-wallet). |
 | **userPhoneNumber**      | string?                   | undefined                       | User's phone number. It's used for autofilling fields for payments via SberPay. Supported format: "+7XXXXXXXXXX".                                                                                           |
 | **gatewayId**            | string?                   | undefined                       | Gateway ID for the store.                                                                                                                                                                                   |
 | **returnUrl**            | string?                   | undefined                       | Url of the page (only https supported) where you need to return after completing 3DS. If `confirmPaymen()` is used, don't specify this parameter!                                                           |
@@ -184,7 +215,7 @@ const onPayPress = () => {
 | **applePayMerchantId**   | string?                   | undefined                       | Apple Pay merchant ID (❗️ required for payments via Apple Pay)                                                                                                                                             |
 | **isDebug**              | boolean?                  | false                           | Enter to the Debug mode to test payments. In this mode you will receive fake tokens. If you want to test real tokens try to set up Test Shop in the YooKassa Panel.                                         |
 
-### Troubleshooting
+## Troubleshooting
 
 If you see errors in Xcode Project like this:
 
