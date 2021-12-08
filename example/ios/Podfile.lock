@@ -251,7 +251,7 @@ PODS:
     - React-Core (= 0.63.4)
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
-  - rn-yookassa (0.1.0):
+  - rn-yookassa (1.0.1):
     - CardIO (~> 5.4.1)
     - React-Core
     - YooKassaPayments
@@ -418,7 +418,7 @@ SPEC CHECKSUMS:
   React-RCTText: 5c51df3f08cb9dedc6e790161195d12bac06101c
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
-  rn-yookassa: e3e34b0c3447d083ed4646aeda8b42008566bfa1
+  rn-yookassa: f18b361397cda5729098e11b361a9a5e4d0214cb
   ThreatMetrixAdapter: 1b31f0afe02eb68be52945e160cc9c0fd117b06c
   YandexMobileMetrica: 9e713c16bb6aca0ba63b84c8d7b8b86d32f4ecc4
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
@@ -427,6 +427,6 @@ SPEC CHECKSUMS:
   YooKassaWalletApi: c1916b692ad842ae04917a10ce66d6d2f971c653
   YooMoneyCoreApi: a3056b54f1df47b193ed5b5213e970a128c70b04
 
-PODFILE CHECKSUM: 138491c82e8e438d864513599b24d1f5cfd2229a
+PODFILE CHECKSUM: e09b2bf31d9515e6118eb2c0241de568f95a9e1b
 
 COCOAPODS: 1.11.2
