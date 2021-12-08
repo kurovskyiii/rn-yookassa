@@ -1,4 +1,4 @@
-export enum GooglePaymentTypesEnum {
+export enum GooglePaymentMethodTypesEnum {
   AMEX = 'AMEX',
   DISCOVER = 'DISCOVER',
   JCB = 'JCB',

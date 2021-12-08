@@ -1,4 +1,5 @@
+import type { ErrorCodesEnum } from '.';
 export interface ErrorResult {
-  code: string;
+  code: ErrorCodesEnum;
   message: string;
 }

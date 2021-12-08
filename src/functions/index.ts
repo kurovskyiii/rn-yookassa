@@ -1,3 +1,3 @@
 export * from './tokenize';
 export * from './confirmPayment';
-export * from './cancel';
+export * from './dismiss';

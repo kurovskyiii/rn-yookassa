@@ -1,27 +1,29 @@
 import { NativeModules } from 'react-native';
 
 import type {
-  TokenizationConfig,
+  TokenizationParams,
   TokenizationResult,
   ErrorResult,
 } from '../types';
+import { YooKassaError } from '../classes';
 
 const RnYookassa = NativeModules.RnYookassa;
 
 export function tokenize(
-  info: TokenizationConfig
+  params: TokenizationParams
 ): Promise<TokenizationResult> {
-  //TODO: Maybe create mapper
-  const paymentConfig = info;
-
   return new Promise((resolve, reject) => {
     RnYookassa.tokenize(
-      paymentConfig,
+      params,
       (result?: TokenizationResult, error?: ErrorResult) => {
         if (result) {
           resolve(result);
         } else {
-          reject(error);
+          if (error) {
+            reject(new YooKassaError(error.code, error.message));
+          } else {
+            reject();
+          }
         }
       }
     );

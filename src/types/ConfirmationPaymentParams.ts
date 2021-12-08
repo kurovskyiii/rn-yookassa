@@ -1,6 +1,6 @@
 import type { PaymentMethodTypesEnum } from '.';
 
-export interface TokenizationResult {
-  paymentToken: string;
+export interface ConfirmationPaymentParams {
+  confirmationUrl: string;
   paymentMethodType: PaymentMethodTypesEnum;
 }

@@ -2,11 +2,11 @@
 
 @interface RCT_EXTERN_MODULE(RnYookassa, RCTViewManager)
 
-RCT_EXTERN_METHOD(tokenize:(NSDictionary *)info
+RCT_EXTERN_METHOD(tokenize:(NSDictionary *)params
                   callbacker:(RCTResponseSenderBlock)callback)
-RCT_EXTERN_METHOD(confirmPayment:(NSString *)url
+RCT_EXTERN_METHOD(confirmPayment:(NSDictionary *)params
                   callbacker:(RCTResponseSenderBlock)callback)
-RCT_EXTERN_METHOD(cancel)
+RCT_EXTERN_METHOD(dismiss)
 
 @end
 

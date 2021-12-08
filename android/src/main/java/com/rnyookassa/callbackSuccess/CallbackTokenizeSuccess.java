@@ -3,20 +3,20 @@ package com.rnyookassa.callbackSuccess;
 import androidx.annotation.NonNull;
 
 public final class CallbackTokenizeSuccess {
-  private String token;
+  private String paymentToken;
 
-  public String getToken() {
-    return token;
+  public String getPaymentToken() {
+    return paymentToken;
   }
 
-  private String type;
+  private String paymentMethodType;
 
-  public String getType() {
-    return type;
+  public String getPaymentMethodType() {
+    return paymentMethodType;
   }
 
-  public CallbackTokenizeSuccess(@NonNull String token, @NonNull String type) {
-    this.token = token;
-    this.type = type;
+  public CallbackTokenizeSuccess(@NonNull String paymentToken, @NonNull String paymentMethodType) {
+    this.paymentToken = paymentToken;
+    this.paymentMethodType = paymentMethodType;
   }
 }

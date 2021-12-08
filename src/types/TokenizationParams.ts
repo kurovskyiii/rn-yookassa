@@ -1,18 +1,18 @@
-import type { PaymentTypesEnum, GooglePaymentTypesEnum } from '.';
+import type { PaymentMethodTypesEnum, GooglePaymentMethodTypesEnum } from '.';
 
-export interface TokenizationConfig {
+export interface TokenizationParams {
   clientApplicationKey: string;
   shopId: string;
   title: string;
   subtitle: string;
   // TODO: currency
   price: number;
-  paymentTypes?: PaymentTypesEnum[];
+  paymentMethodTypes?: PaymentMethodTypesEnum[];
   authCenterClientId?: string; // ! If YooMoney method selected
   userPhoneNumber?: string;
   gatewayId?: string;
   returnUrl?: string;
-  googlePaymentTypes?: GooglePaymentTypesEnum[];
+  googlePaymentMethodTypes?: GooglePaymentMethodTypesEnum[];
   applePayMerchantId?: string;
   isDebug?: boolean;
 }

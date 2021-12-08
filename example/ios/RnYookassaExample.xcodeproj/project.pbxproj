@@ -446,8 +446,8 @@
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/FunctionalSwift/FunctionalSwift.framework/FunctionalSwift",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/MoneyAuth/MoneyAuth.framework/MoneyAuth",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ThreatMetrixAdapter/ThreatMetrixAdapter.framework/ThreatMetrixAdapter",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/YandexMobileMetrica/Dynamic/Core/YandexMobileMetrica.framework/YandexMobileMetrica",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/YandexMobileMetrica/Dynamic/Crashes/YandexMobileMetricaCrashes.framework/YandexMobileMetricaCrashes",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/YandexMobileMetrica/YandexMobileMetrica.framework/YandexMobileMetrica",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/YandexMobileMetricaCrashes/YandexMobileMetricaCrashes.framework/YandexMobileMetricaCrashes",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/YooMoneyCoreApi/YooMoneyCoreApi.framework/YooMoneyCoreApi",
 			);
 			name = "[CP] Embed Pods Frameworks";

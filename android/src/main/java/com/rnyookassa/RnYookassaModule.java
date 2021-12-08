@@ -66,12 +66,12 @@ public class RnYookassaModule extends ReactContextBaseJavaModule {
     String subtitle = obj.getString("subtitle");
     String amount = String.valueOf(obj.getDouble("price"));
 
-    ReadableArray paymentTypes = obj.hasKey("paymentTypes") ? obj.getArray("paymentTypes") : null;
+    ReadableArray paymentTypes = obj.hasKey("paymentMethodTypes") ? obj.getArray("paymentMethodTypes") : null;
     String authCenterClientId = obj.hasKey("authCenterClientId") ? obj.getString("authCenterClientId") : null;
     String userPhoneNumber = obj.hasKey("userPhoneNumber") ? obj.getString("userPhoneNumber") : null;
     String gatewayId = obj.hasKey("gatewayId") ? obj.getString("gatewayId") : null;
     String returnUrl = obj.hasKey("returnUrl") ? obj.getString("returnUrl") : null;
-    ReadableArray googlePaymentTypes = obj.hasKey("googlePaymentTypes") ? obj.getArray("googlePaymentTypes") : null;
+    ReadableArray googlePaymentTypes = obj.hasKey("googlePaymentMethodTypes") ? obj.getArray("googlePaymentMethodTypes") : null;
 
     Boolean isDebug = obj.hasKey("isDebug") ? Boolean.valueOf(obj.getBoolean("isDebug")) : false;
 
@@ -104,14 +104,18 @@ public class RnYookassaModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void confirmPayment(String url, Callback callback) {
+  public void confirmPayment(ReadableMap obj, Callback callback) {
     this.paymentCallback = callback;
-    Intent intent = Checkout.create3dsIntent(this.reactContext, url);
-    // Intent intent = Checkout.createConfirmationIntent(this.reactContext, url);
+
+    String confirmationUrl = obj.getString("confirmationUrl");
+    String _paymentMethodType = String.valueOf(obj.getString("paymentMethodType"));
+    PaymentMethodType paymentMethodType = PaymentMethodType.valueOf(_paymentMethodType);
+
+    Intent intent = Checkout.createConfirmationIntent(this.reactContext, confirmationUrl, paymentMethodType);
     Activity activity = getCurrentActivity();
 
     if (activity == null) {
-      final CallbackError callbackErrorResult = new CallbackError(CallbackErrorTypes.E_PAYMENT_CANCELLED, "Payment confirmation error.");
+      final CallbackError callbackErrorResult = new CallbackError(CallbackErrorTypes.E_UNKNOWN, "Payment confirmation error.");
       final WritableMap errorResultMap = generateErrorMapCallback(callbackErrorResult);
 
       paymentCallback.invoke(false, errorResultMap);
@@ -119,6 +123,11 @@ public class RnYookassaModule extends ReactContextBaseJavaModule {
     }
 
     activity.startActivityForResult(intent, REQUEST_CODE_3DSECURE);
+  }
+
+  @ReactMethod
+  public void dismiss() {
+    return;
   }
 
   @NonNull
@@ -251,8 +260,8 @@ public class RnYookassaModule extends ReactContextBaseJavaModule {
 
   private final WritableMap generateTokenizeSuccessCallback(CallbackTokenizeSuccess result) {
     final WritableMap resultMap = Arguments.createMap();
-    resultMap.putString("token", result.getToken());
-    resultMap.putString("type", result.getType());
+    resultMap.putString("paymentToken", result.getPaymentToken());
+    resultMap.putString("paymentMethodType", result.getPaymentMethodType());
 
     return resultMap;
   }

@@ -2,7 +2,7 @@
 
 Inspired by: [react-native-yookassa-payments](https://www.npmjs.com/package/react-native-yookassa-payments)
 
-#### Android NATIVE SDK - 6.4.4
+#### Android NATIVE SDK - 6.4.5
 
 #### iOS NATIVE SDK - 6.4.0
 
@@ -155,7 +155,12 @@ target 'ExampleApp' do
 
 3. Add `TMXProfiling.xcframework` and `TMXProfilingConnections.xcframework` in **Frameworks, Libraries, and Embedded Content** in Xcode for the main target of the project under the **General** section.
 
-4. Run `pod install`.
+4. Run `pod install`.<br/><br/> \* If you get `[!] Invalid Podfile file: undefined method 'enable_user_defined_build_types!'` error<br/>
+   run command:
+
+   ```bash
+   sudo gem install cocoapods-user-defined-build-types
+   ```
 
 5. (Optional) Russian Localization
    - In your Xcode project => Info => Localization => Click "+" => Add Russian language
@@ -165,59 +170,163 @@ target 'ExampleApp' do
 
 ## Usage
 
+#### 1) Import functions and types from package
+
 ```typescript
 import {
   tokenize,
-  PaymentTypesEnum,
-  GooglePaymentTypesEnum,
+  confirmPayment,
+  dismiss,
+  YooKassaError,
+  ErrorCodesEnum, // TypeScript Only
 } from 'rn-yookassa';
+```
 
-const onPayPress = () => {
-  tokenize({
-    clientApplicationKey: 'test_ABCDEF',
-    shopId: '123456',
-    title: 'iPhone 7',
-    subtitle: 'Best device!',
-    price: 1000,
-    // OPTIONAL:
-    paymentTypes: [PaymentTypesEnum.BANK_CARD, PaymentTypesEnum.APPLE_PAY],
-    authCenterClientId: '123abc',
-    userPhoneNumber: '+79301234567',
-    gatewayId: '123abc',
-    returnUrl: 'http://google.com',
-    googlePaymentTypes: [
-      GooglePaymentTypesEnum.VISA,
-      GooglePaymentTypesEnum.MASTERCARD,
-    ],
-    applePayMerchantId: 'merchant.com.example',
-    isDebug: false,
-  })
-    .then((result) => console.log(`${result.token} ${result.type}`))
-    .catch((err: ErrorResult) => console.log(`${err.code} ${err.message}`));
+#### 2) Create payment trigger
+
+```typescript
+const onPayPress = async () => {
+  try {
+    // Our next code will be here.
+  } catch (err) {
+    // Process errors from YooKassa module:
+    if (err instanceof YooKassaError) {
+      switch (err.code) {
+        case ErrorCodesEnum.E_PAYMENT_CANCELLED:
+          console.log('User cancelled YooKassa module.');
+          break;
+      }
+    }
+  }
 };
 ```
 
-### `tokenize()` props
+You can check error is instance of `YooKassaError` and process error codes.
+To simplify work with error codes you can use `ErrorCodesEnum` (TypeScript Only).
 
-| Name                     | Type                      | Default                         | Description                                                                                                                                                                                                 |
-| ------------------------ | ------------------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **clientApplicationKey** | string                    | ❗️ **REQUIRED**                | Key for client apps from the YooMoney Merchant Profile ([Settings section — API keys](https://yookassa.ru/my/api-keys-settings)).                                                                           |
-| **shopId**               | string                    | ❗️ **REQUIRED**                | Store's ID in YooMoney.                                                                                                                                                                                     |
-| **title**                | string                    | ❗️ **REQUIRED**                | Product name.                                                                                                                                                                                               |
-| **subtitle**             | string                    | ❗️ **REQUIRED**                | Product description.                                                                                                                                                                                        |
-| **price**                | number                    | ❗️ **REQUIRED**                | Product price. Available payment methods can change depending on this parameter.                                                                                                                            |
-| **paymentTypes**         | PaymentTypesEnum[]?       | All of `PaymentTypesEnum`       | Array of needed payment methods. If you leave the field empty, the library will use all available payment methods.                                                                                          |
-| **authCenterClientId**   | string?                   | undefined                       | App's ID for SDK authorization ru.yoomoney.sdk.auth, see [Registering an app for payments via the wallet](https://github.com/yoomoney/yookassa-android-sdk#registering-an-app-for-payments-via-the-wallet). |
-| **userPhoneNumber**      | string?                   | undefined                       | User's phone number. It's used for autofilling fields for payments via SberPay. Supported format: "+7XXXXXXXXXX".                                                                                           |
-| **gatewayId**            | string?                   | undefined                       | Gateway ID for the store.                                                                                                                                                                                   |
-| **returnUrl**            | string?                   | undefined                       | Url of the page (only https supported) where you need to return after completing 3DS. If `confirmPaymen()` is used, don't specify this parameter!                                                           |
-| **googlePaymentTypes**   | GooglePaymentTypesEnum[]? | All of `GooglePaymentTypesEnum` | Array of needed payment methods for Google Pay (❗️ required for payments via Google Pay).                                                                                                                  |
-| **applePayMerchantId**   | string?                   | undefined                       | Apple Pay merchant ID (❗️ required for payments via Apple Pay)                                                                                                                                             |
-| **isDebug**              | boolean?                  | false                           | Enter to the Debug mode to test payments. In this mode you will receive fake tokens. If you want to test real tokens try to set up Test Shop in the YooKassa Panel.                                         |
+#### 3) Run tokenization
+
+You will get `paymentToken` for payment validation via your back-end and `paymentMethodType` for the next payment confirmation process.
+
+❗️ Do not specify `returnUrl` if you want to confirm payment in-app.
+
+```typescript
+const { paymentToken, paymentMethodType } = await tokenize({
+  clientApplicationKey: 'test_ABCDEF',
+  shopId: '123456',
+  title: 'iPhone 7',
+  subtitle: 'Best device!',
+  price: 1000,
+  // OPTIONAL:
+  paymentTypes: [PaymentTypesEnum.BANK_CARD, PaymentTypesEnum.APPLE_PAY],
+  authCenterClientId: '123abc',
+  userPhoneNumber: '+79301234567',
+  gatewayId: '123abc',
+  returnUrl: 'http://google.com',
+  googlePaymentTypes: [
+    GooglePaymentTypesEnum.VISA,
+    GooglePaymentTypesEnum.MASTERCARD,
+  ],
+  applePayMerchantId: 'merchant.com.example',
+  isDebug: false,
+});
+```
+
+#### 4) Validate `paymentToken` with your API and return `confirmationUrl`
+
+You also can check payments error on that stage (for example, `card_expired`). All error list available [here](https://yookassa.ru/en/developers/payments/declined-payments).
+
+```typescript
+const { confirmationUrl, paymentError } = await yourApiRequest({
+  confirmationUrl,
+});
+
+// Error validation here...
+// Call dismiss() if you get an error and notify user.
+```
+
+#### 5) Confirm payment in-app (3-D Secure or another method)
+
+If you get `confirmation_url` from the Payment object returned by API's response so you should confirm that payment.
+Use here `paymentMethodType` from `tokenize()` result.
+
+```typescript
+await confirmPayment({ confirmationUrl, paymentMethodType });
+```
+
+#### 6) Close YooKassa window and show Success notification
+
+```typescript
+dismiss();
+```
+
+### `tokenize()`
+
+Open YooKassa window and create payment token.
+
+#### Props
+
+| Name                         | Type                                        | Default                               | Description                                                                                                                                                                                                 |
+| ---------------------------- | ------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **clientApplicationKey**     | string                                      | ❗️ **REQUIRED**                      | Key for client apps from the YooMoney Merchant Profile ([Settings section — API keys](https://yookassa.ru/my/api-keys-settings)).                                                                           |
+| **shopId**                   | string                                      | ❗️ **REQUIRED**                      | Store's ID in YooMoney.                                                                                                                                                                                     |
+| **title**                    | string                                      | ❗️ **REQUIRED**                      | Product name.                                                                                                                                                                                               |
+| **subtitle**                 | string                                      | ❗️ **REQUIRED**                      | Product description.                                                                                                                                                                                        |
+| **price**                    | number                                      | ❗️ **REQUIRED**                      | Product price. Available payment methods can change depending on this parameter.                                                                                                                            |
+| **paymentMethodTypes**       | PaymentMethodTypesEnum[]? (string[]?)       | All of `PaymentMethodTypesEnum`       | Array of needed payment methods. If you leave the field empty, the library will use all available payment methods.                                                                                          |
+| **authCenterClientId**       | string?                                     | undefined                             | App's ID for SDK authorization ru.yoomoney.sdk.auth, see [Registering an app for payments via the wallet](https://github.com/yoomoney/yookassa-android-sdk#registering-an-app-for-payments-via-the-wallet). |
+| **userPhoneNumber**          | string?                                     | undefined                             | User's phone number. It's used for autofilling fields for payments via SberPay. Supported format: "+7XXXXXXXXXX".                                                                                           |
+| **gatewayId**                | string?                                     | undefined                             | Gateway ID for the store.                                                                                                                                                                                   |
+| **returnUrl**                | string?                                     | undefined                             | Url of the page (only https supported) where you need to return after completing 3DS. If `confirmPayment()` is used, don't specify this parameter!                                                          |
+| **googlePaymentMethodTypes** | GooglePaymentMethodTypesEnum[]? (string[]?) | All of `GooglePaymentMethodTypesEnum` | Array of needed payment methods for Google Pay (❗️ required for payments via Google Pay).                                                                                                                  |
+| **applePayMerchantId**       | string?                                     | undefined                             | Apple Pay merchant ID (❗️ required for payments via Apple Pay).                                                                                                                                            |
+| **isDebug**                  | boolean?                                    | false                                 | Enter to the Debug mode to test payments. In this mode you will receive fake tokens. If you want to test real tokens try to set up Test Shop in the YooKassa Panel.                                         |
+
+#### Result
+
+| Name                  | Type                            | Description                                                                  |
+| --------------------- | ------------------------------- | ---------------------------------------------------------------------------- |
+| **paymentToken**      | string                          | Payment token that you need to pass to your API.                             |
+| **paymentMethodType** | PaymentMethodTypesEnum (string) | Payment method that was used. This will be used in the confirmation process. |
+
+### `confirmPayment()`
+
+Call this after you get `confirmation_url` from your API. Make sure you aren't specify `returnUrl` in the `tokenize()` function and didn't dismiss YooKassa window yet.
+
+#### Props
+
+| Name                  | Type                            | Default          | Description                                               |
+| --------------------- | ------------------------------- | ---------------- | --------------------------------------------------------- |
+| **confirmationUrl**   | string                          | ❗️ **REQUIRED** | Confirmation url that you have got from your API.         |
+| **paymentMethodType** | PaymentMethodTypesEnum (string) | ❗️ **REQUIRED** | Payment method that was used in the tokenization process. |
+
+#### Result
+
+| Name                  | Type                            | Description                   |
+| --------------------- | ------------------------------- | ----------------------------- |
+| **paymentMethodType** | PaymentMethodTypesEnum (string) | Payment method that was used. |
+
+### `dismiss()`
+
+Close YooKassa window. Call it after successful payment confirmation.
 
 ## Troubleshooting
 
-If you see errors in Xcode Project like this:
+### 1) If you see errors during `pod install`:
+
+```
+[!] Invalid Podfile file: undefined method `enable_user_defined_build_types!'
+```
+
+You need to install CocoaPods additional package:
+
+```bash
+sudo gem install cocoapods-user-defined-build-types
+```
+
+Then run `pod install` again.
+
+### 2) If you see errors in Xcode Project like this:
 
 ```
 Failed to build module 'MoneyAuth' from its module interface...

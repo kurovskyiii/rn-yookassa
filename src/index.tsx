@@ -1,6 +1,7 @@
 import { NativeModules, Platform } from 'react-native';
 
 export * from './types';
+export * from './classes';
 
 const LINKING_ERROR =
   `The package 'rn-yookassa' doesn't seem to be linked. Make sure: \n\n` +
