@@ -129,5 +129,4 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   implementation 'io.card:android-sdk:5.5.1'
   implementation 'ru.yoomoney.sdk.kassa.payments:yookassa-android-sdk:6.4.5'
-  implementation fileTree(dir: "libs", include: ["*.aar"])
 }

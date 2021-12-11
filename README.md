@@ -100,7 +100,6 @@ allprojects {
 dependencies {
     ...
 
-    implementation 'ru.yoomoney.sdk.kassa.payments:yookassa-android-sdk:6.4.4' // <- ADD THIS LINE
     implementation fileTree(dir: "libs", include: ["*.aar"]) // <- ADD THIS LINE
 }
 ```
