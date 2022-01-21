@@ -55,13 +55,12 @@ npm install rn-yookassa --save
 
 1.  Create `libs` folder in `android/app` directory and put there `ThreatMetrix Android SDK X.X-XX.aar` file (this file will given you by YooKassa manager by support request).<br/><br/>
     ❗️ Required TMX Android SDK version > 6.2-XX ❗️<br/><br/>
-2.  Make sure your `android/build.gradle` looks like that. Pay attention for `minSdkVersion`, `kotlinVersion`, version of `com.android.tools.build:gradle`. This is the minimal requirements, so if you have higher versions it's ok.
+2.  Make sure your `android/build.gradle` looks like that. Pay attention for `minSdkVersion` and version of `com.android.tools.build:gradle`. This is the minimal requirements, so if you have higher versions it's ok.
 
 ```gradle
 buildscript {
     ext {
         minSdkVersion = 21 // <- CHECK YOU HAVE THIS MINIMAL VERSION
-        kotlinVersion = "1.5.20" // <- CHECK YOU HAVE THIS
         ...
     }
 
@@ -104,13 +103,13 @@ dependencies {
 }
 ```
 
-4.  Add following lines in `android/app/src/main/res/values/strings.xml` to set scheme `SCHEME` for processing **deep links**. It's required for payments via **SberPay**.
+4.  Add following lines in `android/app/src/main/res/values/strings.xml` to set scheme `your_unique_app_shceme` for processing **deep links**. It's required for payments via **SberPay**.
 
 ```xml
 <resources>
     ...
 
-    <string name="ym_app_scheme" translatable="false">SCHEME</string> <!-- ADD THIS LINE -->
+    <string name="ym_app_scheme" translatable="false">your_unique_app_shceme</string> <!-- ADD THIS LINE -->
 </resources>
 ```
 
@@ -259,11 +258,11 @@ await confirmPayment({ confirmationUrl, paymentMethodType });
 dismiss();
 ```
 
-### `tokenize()`
+### `tokenize({...PROPS})`
 
 Open YooKassa window and create payment token.
 
-#### Props
+#### PROPS
 
 | Name                         | Type                                        | Default                               | Description                                                                                                                                                                                                 |
 | ---------------------------- | ------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -288,11 +287,11 @@ Open YooKassa window and create payment token.
 | **paymentToken**      | string                          | Payment token that you need to pass to your API.                             |
 | **paymentMethodType** | PaymentMethodTypesEnum (string) | Payment method that was used. This will be used in the confirmation process. |
 
-### `confirmPayment()`
+### `confirmPayment({...PROPS})`
 
 Call this after you get `confirmation_url` from your API. Make sure you aren't specify `returnUrl` in the `tokenize()` function and didn't dismiss YooKassa window yet.
 
-#### Props
+#### PROPS
 
 | Name                  | Type                            | Default          | Description                                               |
 | --------------------- | ------------------------------- | ---------------- | --------------------------------------------------------- |
