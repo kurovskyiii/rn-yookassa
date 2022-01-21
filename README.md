@@ -6,6 +6,8 @@ Inspired by: [react-native-yookassa-payments](https://www.npmjs.com/package/reac
 
 #### iOS NATIVE SDK - 6.2.0
 
+<br/>
+
 ## Quick Navigation
 
 - [Running Example App](#running-example-app)
@@ -15,6 +17,8 @@ Inspired by: [react-native-yookassa-payments](https://www.npmjs.com/package/reac
   - [iOS Installation](#ios-installation)
 - [Usage](#usage)
 - [Troubleshooting](#troubleshooting)
+
+<br/>
 
 ## Running Example App
 
@@ -37,6 +41,8 @@ yarn example android
 yarn example ios
 ```
 
+<br/>
+
 ## STEP 1: Package Installation
 
 ```bash
@@ -49,7 +55,11 @@ yarn add rn-yookassa
 npm install rn-yookassa --save
 ```
 
+<br/>
+
 ## STEP 2: Native Installation
+
+<br/>
 
 ### Android Installation:
 
@@ -125,6 +135,8 @@ dependencies {
 </manifest>
 ```
 
+<br/>
+
 ### iOS Installation:
 
 1.  Change `ios/Podfile` like this:
@@ -159,6 +171,8 @@ target 'ExampleApp' do
    ```bash
    sudo gem install cocoapods-user-defined-build-types
    ```
+
+<br/>
 
 ## Usage
 
@@ -254,6 +268,8 @@ await confirmPayment({ confirmationUrl, paymentMethodType });
 dismiss();
 ```
 
+<br/>
+
 ### `tokenize({...PROPS})`
 
 Open YooKassa window and create payment token.
@@ -290,6 +306,8 @@ Open YooKassa window and create payment token.
 | **code**    | ErrorCodesEnum | Error code that describes what happened. |
 | **message** | string         | Something about the error.               |
 
+<br/>
+
 ### `confirmPayment({...PROPS})`
 
 Call this after you get `confirmation_url` from your API. Make sure you aren't specify `returnUrl` in the `tokenize()` function and didn't dismiss YooKassa window yet.
@@ -314,9 +332,13 @@ Call this after you get `confirmation_url` from your API. Make sure you aren't s
 | **code**    | ErrorCodesEnum | Error code that describes what happened. |
 | **message** | string         | Something about the error.               |
 
+<br/>
+
 ### `dismiss()`
 
 Close YooKassa window. Call it after successful payment confirmation.
+
+<br/>
 
 ## Troubleshooting
 
@@ -367,6 +389,8 @@ https://github.com/yoomoney/yookassa-payments-swift/issues/93
 
 For using your custom realization of **3DSecure confirmation**, specify `returnUrl`: string for redirect to your link. Not use `confirmPayment()` method with `returnUrl`.
 
+<br/>
+
 ## TODO
 
 - [ ] iOS Russian localization
@@ -374,6 +398,10 @@ For using your custom realization of **3DSecure confirmation**, specify `returnU
 - [ ] Refactoring native bridges
 - [ ] Implementing bridges for YooMoney and SberPay
 - [ ] Writing instructions for all payment methods
+- [ ] Writing CHANGELOG.MD
+- [ ] Writing MIGRATION.MD
+
+<br/>
 
 ## License
 
