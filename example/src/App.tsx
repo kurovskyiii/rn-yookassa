@@ -7,6 +7,7 @@ import {
   dismiss,
   YooKassaError,
   ErrorCodesEnum,
+  PaymentMethodTypesEnum,
 } from 'rn-yookassa';
 
 const CONFIRMATION_URL =
@@ -32,6 +33,10 @@ export default function App() {
         title: 'Товар',
         subtitle: 'Описание',
         price: 100,
+        paymentMethodTypes: [
+          PaymentMethodTypesEnum.BANK_CARD,
+          PaymentMethodTypesEnum.GOOGLE_PAY,
+        ],
         // isDebug: true,
       });
 

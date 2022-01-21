@@ -4,7 +4,7 @@ Inspired by: [react-native-yookassa-payments](https://www.npmjs.com/package/reac
 
 #### Android NATIVE SDK - 6.4.0
 
-#### iOS NATIVE SDK - 6.6.0
+#### iOS NATIVE SDK - 6.2.0
 
 ## Quick Navigation
 
@@ -131,7 +131,7 @@ dependencies {
 
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git' # <- ADD THIS LINE
-source 'https://github.com/yoomoney-tech/cocoa-pod-specs.git' # <- ADD THIS LINE
+source 'https://github.com/yoomoney/cocoa-pod-specs.git' # <- ADD THIS LINE
 
 plugin 'cocoapods-user-defined-build-types' # <- ADD THIS LINE
 enable_user_defined_build_types! # <- ADD THIS LINE
@@ -143,7 +143,7 @@ target 'ExampleApp' do
   pod 'YooKassaPayments',
     :build_type => :dynamic_framework,
     :git => 'https://github.com/yoomoney/yookassa-payments-swift.git',
-    :tag => '6.6.0'
+    :tag => '6.2.0'
 
 ...
 

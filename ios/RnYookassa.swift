@@ -33,14 +33,25 @@ class RnYookassa: RCTViewManager, TokenizationModuleOutput {
 
         if (paymentTypes != nil) {
             paymentTypes!.forEach { type in
-                if let payType = PaymentMethodType(rawValue: type) {
+                if let payType = PaymentMethodType(rawValue: type.lowercased()) {
+                    if (payType == .yooMoney && authCenterClientId == nil) {
+                        return
+                    }
+
+                    if (payType == .applePay && applePayMerchantId == nil) {
+                        return
+                    }
+
                     paymentMethodTypes.insert(PaymentMethodTypes(rawValue: [payType]))
                 }
             }
         } else {
             paymentMethodTypes.insert(.bankCard)
             paymentMethodTypes.insert(.sberbank)
-            paymentMethodTypes.insert(.yooMoney)
+
+            if (authCenterClientId != nil) {
+                paymentMethodTypes.insert(.yooMoney)
+            }
 
             if (applePayMerchantId != nil) {
                 paymentMethodTypes.insert(.applePay)
@@ -69,8 +80,8 @@ class RnYookassa: RCTViewManager, TokenizationModuleOutput {
             isLoggingEnabled: (isDebug != nil) ? true : false,
             userPhoneNumber: userPhoneNumber,
             savePaymentMethod: .userSelects,
-            moneyAuthClientId: authCenterClientId,
-            customerId: userPhoneNumber
+            moneyAuthClientId: authCenterClientId
+            // customerId: userPhoneNumber
         )
 
         DispatchQueue.main.async {
@@ -80,7 +91,7 @@ class RnYookassa: RCTViewManager, TokenizationModuleOutput {
             rootViewController.present(self.viewController!, animated: true, completion: nil)
         }
     }
-    
+
     @objc
     func confirmPayment(_ params: NSDictionary, callbacker callback: @escaping RCTResponseSenderBlock) -> Void {
         guard let confirmationUrl = params["confirmationUrl"] as? String,
@@ -88,15 +99,15 @@ class RnYookassa: RCTViewManager, TokenizationModuleOutput {
         else {
             return
         }
-        
+
         guard let paymentMethodType = PaymentMethodType(rawValue: _paymentMethodType.lowercased()) else {return}
-        
+
         guard let viewController = viewController as? TokenizationModuleInput else { return }
         confirmCallback = callback
         viewController.startConfirmationProcess(confirmationUrl: confirmationUrl,
                                                 paymentMethodType: paymentMethodType)
     }
-    
+
     @objc
     func dismiss() {
         DispatchQueue.main.async {
@@ -128,7 +139,7 @@ class RnYookassa: RCTViewManager, TokenizationModuleOutput {
         DispatchQueue.main.async {
             self.viewController?.dismiss(animated: true)
         }
-        
+
         if let callback = callback {
             callback([NSNull(), error])
             self.callback = nil
@@ -139,25 +150,25 @@ class RnYookassa: RCTViewManager, TokenizationModuleOutput {
         let result: NSDictionary = [
             "paymentMethodType" : paymentMethodType.rawValue.uppercased()
         ]
-        
+
         DispatchQueue.main.async {
             self.viewController?.dismiss(animated: true)
         }
-    
+
         if let callback = self.confirmCallback {
             callback([result])
             confirmCallback = nil
         }
-        
+
 // OLD VERSION
 //        viewController?.dismiss(animated: true)
 //        self.dismiss()
     }
-    
+
     override class func requiresMainQueueSetup() -> Bool {
         return false
     }
-    
+
     func didSuccessfullyPassedCardSec(on module: TokenizationModuleInput) {}
 
 }
