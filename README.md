@@ -143,7 +143,7 @@ target 'ExampleApp' do
   pod 'YooKassaPayments',
     :build_type => :dynamic_framework,
     :git => 'https://github.com/yoomoney/yookassa-payments-swift.git',
-    :tag => '6.4.0'
+    :tag => '6.6.0'
 
 ...
 
@@ -159,12 +159,6 @@ target 'ExampleApp' do
    ```bash
    sudo gem install cocoapods-user-defined-build-types
    ```
-
-5. (Optional) Russian Localization
-   - In your Xcode project => Info => Localization => Click "+" => Add Russian language
-   - Copy everything from ios/yookassa-payments-swift-6.0.0/YooKassaPayments/Public/Resources/ru.lproj/Localizable.strings
-   - In your Xcode project => File => New File => Strings File => Localizable.strings => Open new created Localizable.strings and paste all copy strings
-   - After pasting strings look at Xcode right side and find a Localization menu => Choose Russian language
 
 ## Usage
 
