@@ -17,7 +17,7 @@ target 'RnYookassaExample' do
   pod 'YooKassaPayments',
     :build_type => :dynamic_framework,
     :git => 'https://github.com/yoomoney/yookassa-payments-swift.git',
-    :tag => '6.4.0'
+    :tag => '6.6.0'
 
   pod 'rn-yookassa', :path => '../..'
 

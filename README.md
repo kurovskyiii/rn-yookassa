@@ -4,7 +4,7 @@ Inspired by: [react-native-yookassa-payments](https://www.npmjs.com/package/reac
 
 #### Android NATIVE SDK - 6.4.0
 
-#### iOS NATIVE SDK - 6.4.0
+#### iOS NATIVE SDK - 6.6.0
 
 ## Quick Navigation
 
