@@ -2,7 +2,7 @@
 
 Inspired by: [react-native-yookassa-payments](https://www.npmjs.com/package/react-native-yookassa-payments)
 
-#### Android NATIVE SDK - 6.4.5
+#### Android NATIVE SDK - 6.4.0
 
 #### iOS NATIVE SDK - 6.4.0
 
@@ -54,7 +54,7 @@ npm install rn-yookassa --save
 ### Android Installation:
 
 1.  Create `libs` folder in `android/app` directory and put there `ThreatMetrix Android SDK X.X-XX.aar` file (this file will given you by YooKassa manager by support request).<br/><br/>
-    ❗️ Required TMX Android SDK version > 6.2-XX ❗️<br/><br/>
+    ❗️ Required TMX Android SDK version 5.4-XX because of issues with app icon on Android ❗️<br/><br/>
 2.  Make sure your `android/build.gradle` looks like that. Pay attention for `minSdkVersion` and version of `com.android.tools.build:gradle`. This is the minimal requirements, so if you have higher versions it's ok.
 
 ```gradle
