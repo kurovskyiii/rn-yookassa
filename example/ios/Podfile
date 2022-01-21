@@ -2,7 +2,7 @@ require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 source 'https://github.com/CocoaPods/Specs.git'
-source 'https://github.com/yoomoney-tech/cocoa-pod-specs.git'
+source 'https://github.com/yoomoney/cocoa-pod-specs.git'
 
 plugin 'cocoapods-user-defined-build-types'
 enable_user_defined_build_types!
@@ -17,7 +17,7 @@ target 'RnYookassaExample' do
   pod 'YooKassaPayments',
     :build_type => :dynamic_framework,
     :git => 'https://github.com/yoomoney/yookassa-payments-swift.git',
-    :tag => '6.6.0'
+    :tag => '6.2.0'
 
   pod 'rn-yookassa', :path => '../..'
 
