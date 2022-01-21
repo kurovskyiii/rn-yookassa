@@ -1,6 +1,6 @@
 {
   "name": "rn-yookassa",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "React Native YooKassa Module SDK Integration.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
