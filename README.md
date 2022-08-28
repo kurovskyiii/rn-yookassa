@@ -143,7 +143,7 @@ dependencies {
 
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git' # <- ADD THIS LINE
-source 'https://github.com/yoomoney/cocoa-pod-specs.git' # <- ADD THIS LINE
+source 'https://git.yoomoney.ru/scm/sdk/cocoa-pod-specs.git' # <- ADD THIS LINE
 
 plugin 'cocoapods-user-defined-build-types' # <- ADD THIS LINE
 enable_user_defined_build_types! # <- ADD THIS LINE
@@ -154,8 +154,8 @@ target 'ExampleApp' do
   # ADD THIS POD:
   pod 'YooKassaPayments',
     :build_type => :dynamic_framework,
-    :git => 'https://github.com/yoomoney/yookassa-payments-swift.git',
-    :tag => '6.2.0'
+    :git => 'https://git.yoomoney.ru/scm/sdk/yookassa-payments-swift.git',
+    :tag => '6.6.0'
 
 ...
 
